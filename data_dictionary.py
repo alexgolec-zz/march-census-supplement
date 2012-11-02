@@ -4,6 +4,9 @@ Methods for reading and parsing the data dictionary specification file.
 
 from sys import stderr
 
+###############################################################################
+# The data location specification class
+
 class DataSpec:
     def __init__(self, name, start, end, value_min=None, value_max=None,
                  auxiliaries=None):
@@ -25,6 +28,9 @@ class DataSpec:
         self.value_min = value_min
         self.value_max = value_max
         self.auxiliaries = auxiliaries
+
+###############################################################################
+# data specification extraction code
 
 def extract_range(line):
     '''
@@ -86,7 +92,14 @@ def data_spec_line(line):
         split = [i.strip() for i in value_range.split(',')]
         assert len(split) == 1 or len(split) == 2
         if len(split) == 2:
-            val_range, aux = split
+            # either the first or the second could be the auxiliary
+            val1, val2 = split
+            if ':' in val1:
+                val_range = val1
+                aux = val2
+            elif ':' in val2:
+                val_range = val2
+                aux = val1
             auxiliary = [int(aux)]
         else:
             val_range = split[0]
@@ -106,12 +119,15 @@ def extract_columns(f):
     spec = []
     for line in f.xreadlines():
         linenum += 1
-        line = re.sub(r' +', ' ', line.strip())
+        line = re.sub(r'\s+', ' ', line.strip())
         if len(line) < 2:
-            print >> stderr, linenum, 'length of line too short:', line
             continue
         elif line[0] == 'D' and line[1] == ' ':
             spec.append(data_spec_line(line))
+    return spec
+
+###############################################################################
+# main stuff
 
 if __name__ == '__main__':
     with open('asec2012early_pubuse.dd.txt', 'r') as f:

@@ -67,6 +67,11 @@ class test_data_spec_line(unittest.TestCase):
     def test_simple_range(self):
         self.assertTrue(self.equality(data_spec_line('D MIG_DSCP 1 328 (0:5)'),
                                       DataSpec('MIG_DSCP', 327, 328, 0, 5)))
+        self.assertTrue(self.equality(data_spec_line('D MIG-ST 2 326 (00:56, 96)'),
+                                      DataSpec('MIG-ST', 325, 327, 0, 56, [96])))
+    def test_auxiliaries_reversed(self):
+        self.assertTrue(self.equality(data_spec_line('D GTCBSASZ 1 55 (0,2:7)'),
+                                      DataSpec('GTCBSASZ', 54, 55, 2, 7, [0])))
     def test_auxiliaries(self):
         self.assertTrue(self.equality(data_spec_line('D MIG-ST 2 326 (00:56, 96)'),
                                       DataSpec('MIG-ST', 325, 327, 0, 56, [96])))
