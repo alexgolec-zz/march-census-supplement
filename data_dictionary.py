@@ -112,6 +112,9 @@ def data_spec_line(line):
     return DataSpec(name, start, start+length,
                     value_min, value_max, auxiliary)
 
+###############################################################################
+# actual column extraction
+
 import re
 
 def extract_columns(f):

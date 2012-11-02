@@ -83,5 +83,12 @@ class test_data_spec_line(unittest.TestCase):
             ds1.value_max == ds2.value_max and
             ds1.auxiliaries == ds2.auxiliaries)
 
+###############################################################################
+# I have no idea how I would go about testing data.translate_line without
+# going completely crazy.
+
+###############################################################################
+# main stuff
+
 if __name__ == '__main__':
     unittest.main()
