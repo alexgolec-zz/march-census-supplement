@@ -67,12 +67,16 @@ class test_data_spec_line(unittest.TestCase):
     def test_simple_range(self):
         self.assertTrue(self.equality(data_spec_line('D MIG_DSCP 1 328 (0:5)'),
                                       DataSpec('MIG_DSCP', 327, 328, 0, 5)))
+    def test_auxiliaries(self):
+        self.assertTrue(self.equality(data_spec_line('D MIG-ST 2 326 (00:56, 96)'),
+                                      DataSpec('MIG-ST', 325, 327, 0, 56, [96])))
     def equality(self, ds1, ds2, msg=None):
         return (ds1.name == ds2.name and
             ds1.start == ds2.start and
             ds1.end == ds2.end and
             ds1.value_min == ds2.value_min and
-            ds1.value_max == ds2.value_max)
+            ds1.value_max == ds2.value_max and
+            ds1.auxiliaries == ds2.auxiliaries)
 
 if __name__ == '__main__':
     unittest.main()

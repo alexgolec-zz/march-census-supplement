@@ -5,7 +5,8 @@ Methods for reading and parsing the data dictionary specification file.
 from sys import stderr
 
 class DataSpec:
-    def __init__(self, name, start, end, value_min=None, value_max=None):
+    def __init__(self, name, start, end, value_min=None, value_max=None,
+                 auxiliaries=None):
         self.name = name
 
         if start > end:
@@ -23,6 +24,7 @@ class DataSpec:
             
         self.value_min = value_min
         self.value_max = value_max
+        self.auxiliaries = auxiliaries
 
 def extract_range(line):
     '''
@@ -78,12 +80,14 @@ def data_spec_line(line):
     start = int(start) - 1
     value_min = None
     value_max = None
+    auxiliary = None
 
     if value_range != '':
-        split = value_range.split(' ')
+        split = [i.strip() for i in value_range.split(',')]
         assert len(split) == 1 or len(split) == 2
         if len(split) == 2:
-            val_range, auxiliary = split
+            val_range, aux = split
+            auxiliary = [int(aux)]
         else:
             val_range = split[0]
             auxiliary = None
@@ -92,7 +96,8 @@ def data_spec_line(line):
         value_min = int(value_min)
         value_max = int(value_max)
 
-    return DataSpec(name, start, start+length, value_min, value_max)
+    return DataSpec(name, start, start+length,
+                    value_min, value_max, auxiliary)
 
 import re
 
