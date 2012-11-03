@@ -13,7 +13,7 @@ def translate_line(line, columns):
         ret[col.name] = line[col.start:col.end]
     return ret
 
-from data_dictionary import extract_columns
+from data_dictionary import generate_key
 
 def ProgressReporter(generator, iterations, name='entries'):
     class ProgressReporterClass:
@@ -30,14 +30,14 @@ def ProgressReporter(generator, iterations, name='entries'):
 
 if __name__ == '__main__':
     with open('asec2012early_pubuse.dd.txt', 'r') as f:
-        cols = extract_columns(f) 
+        cols = generate_key(f) 
     total = 0
     num = 0
     with open('asec2012early_pubuse.dat', 'r') as f:
         try:
             for line in ProgressReporter(f.xreadlines(), 1000):
                 translated = translate_line(line, cols)
-                income = int(translated['HTOTVAL'])
+                income = int(translated['PTOTVAL'])
                 if income != 0:
                     total += income
                     num += 1

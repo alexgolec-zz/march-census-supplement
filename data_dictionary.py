@@ -117,7 +117,7 @@ def data_spec_line(line):
 
 import re
 
-def extract_columns(f):
+def generate_key(f):
     linenum = 0
     spec = []
     for line in f.xreadlines():
@@ -134,4 +134,4 @@ def extract_columns(f):
 
 if __name__ == '__main__':
     with open('asec2012early_pubuse.dd.txt', 'r') as f:
-        extract_columns(f)
+        generate_key(f)
